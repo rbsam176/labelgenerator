@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <style>
         #label-content {
             transform: rotate(-90deg);
@@ -70,23 +71,20 @@
                     <p class="h1" id="test">Label Generator</p>
                     <p class="h6">Required <span class="text-danger">*</span></p>
                     <label for="repairNumber" class="mt-3 h5">Enter repair number:<span class="text-danger"> *</span></label><br>
-                    <input type="text" id="repairNumber" class="mb-3 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="R486837476" required><br>
+                    <input type="text" id="repairNumber" maxlength="10" class="mb-3 h3 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="R486837476" required><br>
                     <label for="serialNumber" class="mt-3 h5">Enter serial number:<span class="text-danger"> *</span></label><br>
-                    <input type="text" id="serialNumber" class="mb-3 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="C02L10ACFFRR" required><br>
-                    <label for="customerName" class="mt-3 h5">Enter customer name:<span class="text-danger"> *</span></label><br>
-                    <input type="text" id="customerName" placeholder="Appleseed, J" class="mb-3 h3 font-weight-normal text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="Baker, S" required><br>
-                    <!-- <label for="partNumber" class="mt-3 h5">Enter part number:</label><br>
-                    <input type="text" id="partNumber" class="mb-3 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;"><br> -->
+                    <input type="text" id="serialNumber" maxlength="12" class="mb-3 h3 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="C02L10ACFFRR" required><br>
+                    <label for="customerName" class="mt-3 h5 auto-tab">Enter customer name:<span class="text-danger"> *</span></label><br>
+                    <input type="text" id="customerName" maxlength="18" placeholder="Appleseed, J" class="mb-3 h3 font-weight-normal text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" value="Baker, S" required><br>
                     <label for="storeCode" class="h5">Select store:<span class="text-danger"> *</span></label><br>
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required name="storecode">White City
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required name="storecode">Stratford
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" required name="storecode" style="border-color: white; border: 5px solid white; border-radius: 10px;">Brent Cross<br>
-                    <!-- <button id="create-traveller" type="button" class="my-3" onclick="createTravellerLabel()">Print traveller label</button><br> -->
+                    <input type="radio" id="storeCode1" value="R226" class="mt-3 mx-2 h5 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;">White City
+                    <input type="radio" id="storeCode2" value="R410" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;">Stratford
+                    <input type="radio" id="storeCode3" value="R163" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;">Brent Cross<br>
                     <label for="partNumber" class="mt-3 h5">Enter part number:</label><br>
                     <input type="text" id="partNumber" class="mb-1 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;"><br>
                     <button id="create-part" type="button" onclick="createLabel()">Print label</button><br>
                     <p class="h6 font-weight-normal mt-3"><a href="">Click here for printer setup instructions.</a></p>
-                    <p class="h6 font-weight-normal mt-3">Found a bug? Email <a href="mailto:sbaker7@apple.com">sbaker7@apple.com</a> with any issues.</p>
+                    <p class="h6 font-weight-normal mt-3">Found a bug? Email <a href="https://webmail.apple.com">sbaker7@apple.com</a> with any issues.</p>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -108,7 +106,7 @@
                 <div class="ml-1" style="width: 100%; height: 40px; overflow-y: hidden;"><svg id="repair-barcode"></svg></div>
               </div>
               <div class="col-3">
-                <!-- INSERT STORE CODE HERE -->
+                <div id="storeNumberOutput"></div>
               </div>
             </div>
             <p class="h5 pt-2 ml-3" id="serialNumberOutput"></p>
@@ -123,31 +121,53 @@
 // doc.text("Hello landscape world!", 20, 20);
 // doc.save('sample-file.pdf');
 
+    $(".auto-tab").keyup(function() {
+      if (this.value.length == this.maxLength) {
+        $(this).nextAll('.auto-tab:enabled:first').focus();
+      }
+    });
 
-    function createTravellerLabel() {
-        document.getElementById("label-content").style.display = "block";
-        var repairNumber = document.getElementById("repairNumber").value;
-        var serialNumber = document.getElementById("serialNumber").value;
-        var customerName = document.getElementById("customerName").value;
-        document.getElementById("customerNameOutput").innerHTML = customerName;
-        document.getElementById("repairNumberOutput").innerHTML = repairNumber;
-        JsBarcode("#repair-barcode", repairNumber);
-        document.getElementById("serialNumberOutput").innerHTML = serialNumber;
-        JsBarcode("#serial-barcode", serialNumber);
-        document.getElementById('input-fields').remove();
-        var resetButton = `<a href=""><button id="reset">Reset</button></a>`
-        document.getElementById("no-print").innerHTML = resetButton;
-        window.print();
-    }
+
+    // function createTravellerLabel() {
+    //     document.getElementById("label-content").style.display = "block";
+    //     var repairNumber = document.getElementById("repairNumber").value;
+    //     var serialNumber = document.getElementById("serialNumber").value;
+    //     var customerName = document.getElementById("customerName").value;
+    //     document.getElementById("customerNameOutput").innerHTML = customerName;
+    //     document.getElementById("repairNumberOutput").innerHTML = repairNumber;
+    //     JsBarcode("#repair-barcode", repairNumber);
+    //     document.getElementById("serialNumberOutput").innerHTML = serialNumber;
+    //     JsBarcode("#serial-barcode", serialNumber);
+    //     document.getElementById('input-fields').remove();
+    //     var resetButton = `<a href=""><button id="reset">Reset</button></a>`
+    //     document.getElementById("no-print").innerHTML = resetButton;
+    //     window.print();
+    // }
     function createLabel() {
         var repairNumber = document.getElementById("repairNumber").value;
         var serialNumber = document.getElementById("serialNumber").value;
         var customerName = document.getElementById("customerName").value;
         var partNumber = document.getElementById("partNumber").value;
-        if (storeCode === ""){
-            alert("Missing store selection")
-            return
+
+        if (repairNumber[0] !== "R"){
+          alert("Your repair number must begin with an R");
+          return
         }
+      
+
+        if (document.getElementById('storeCode1').checked) {
+          rate_value = document.getElementById('storeCode1').value;
+        } else if (document.getElementById('storeCode2').checked) {
+          rate_value = document.getElementById('storeCode2').value;
+        } else if (document.getElementById('storeCode3').checked) {
+          rate_value = document.getElementById('storeCode3').value;
+        } else {
+          rate_value = ""
+          alert ("You have not selected a store");
+          return;
+        }
+        document.getElementById("storeNumberOutput").innerHTML = rate_value;
+
         document.getElementById("label-content").style.display = "block";
         document.getElementById("customerNameOutput").innerHTML = customerName;
         document.getElementById("repairNumberOutput").innerHTML = repairNumber;
