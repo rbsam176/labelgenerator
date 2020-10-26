@@ -19,3 +19,4 @@
 <img src="printer-setup-2.png">
 4. To make this be the default settings whenever you print, click on 'Presets', then 'Save Current Settings as Preset...' and give it a relevant name
 <img src="printer-setup-3.png">
+
