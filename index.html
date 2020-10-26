@@ -115,11 +115,15 @@
         window.print();
     }
     function createPartLabel() {
-        document.getElementById("label-content").style.display = "block";
         var repairNumber = document.getElementById("repairNumber").value;
         var serialNumber = document.getElementById("serialNumber").value;
         var customerName = document.getElementById("customerName").value;
         var partNumber = document.getElementById("partNumber").value;
+        if (partNumber === ""){
+            alert("Missing part number")
+            return
+        }
+        document.getElementById("label-content").style.display = "block";
         document.getElementById("customerNameOutput").innerHTML = customerName;
         document.getElementById("repairNumberOutput").innerHTML = repairNumber;
         document.getElementById("partNumberOutput").innerHTML = partNumber;
