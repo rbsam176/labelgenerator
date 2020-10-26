@@ -1,3 +1,7 @@
+# Label Generator
+
+<img src="zebra-logo.png" width="100px">
+
 **To turn this project into a .app:**
 1. Open 'Script Editor' on your Mac
 2. Paste the following:
