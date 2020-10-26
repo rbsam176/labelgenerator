@@ -78,13 +78,13 @@
                     <!-- <label for="partNumber" class="mt-3 h5">Enter part number:</label><br>
                     <input type="text" id="partNumber" class="mb-3 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;"><br> -->
                     <label for="storeCode" class="h5">Select store:<span class="text-danger"> *</span></label><br>
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required>White City
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required>Stratford
-                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;"required>Brent Cross<br>
-                    <button id="create-traveller" type="button" class="my-3" onclick="createTravellerLabel()">Print traveller label</button><br>
-                    <label for="partNumber" class="mt-1 h5">Enter part number:</label><br>
+                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required name="storecode">White City
+                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;" required name="storecode">Stratford
+                    <input type="radio" id="storeCode" class="mt-3 mx-2 h5 text-center" required name="storecode" style="border-color: white; border: 5px solid white; border-radius: 10px;">Brent Cross<br>
+                    <!-- <button id="create-traveller" type="button" class="my-3" onclick="createTravellerLabel()">Print traveller label</button><br> -->
+                    <label for="partNumber" class="mt-3 h5">Enter part number:</label><br>
                     <input type="text" id="partNumber" class="mb-1 h3 text-center" style="border-color: white; border: 5px solid white; border-radius: 10px;"><br>
-                    <button id="create-part" type="button" onclick="createPartLabel()">Print part label</button><br>
+                    <button id="create-part" type="button" onclick="createLabel()">Print label</button><br>
                     <p class="h6 font-weight-normal mt-3"><a href="">Click here for printer setup instructions.</a></p>
                     <p class="h6 font-weight-normal mt-3">Found a bug? Email <a href="mailto:sbaker7@apple.com">sbaker7@apple.com</a> with any issues.</p>
                 </div>
@@ -139,13 +139,13 @@
         document.getElementById("no-print").innerHTML = resetButton;
         window.print();
     }
-    function createPartLabel() {
+    function createLabel() {
         var repairNumber = document.getElementById("repairNumber").value;
         var serialNumber = document.getElementById("serialNumber").value;
         var customerName = document.getElementById("customerName").value;
         var partNumber = document.getElementById("partNumber").value;
-        if (partNumber === ""){
-            alert("Missing part number")
+        if (storeCode === ""){
+            alert("Missing store selection")
             return
         }
         document.getElementById("label-content").style.display = "block";
