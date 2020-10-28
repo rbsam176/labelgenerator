@@ -10,6 +10,11 @@
           color: #d6d6d6 !important;
         }
 
+        img {
+            -webkit-filter: drop-shadow(1px 0px 2px rgba(34, 34, 34, 0.276)); 
+            filter:         drop-shadow(1px 0px 2px rgba(34, 34, 34, 0.276)); 
+        }
+
         #label-content {
             transform: rotate(-90deg);
             transform-origin: left top;
@@ -72,13 +77,11 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6 bg-light text-center py-3 mt-4 rounded">
-                    <p class="h1" id="test">Label Generator</p><br>
+                    <p class="h1">Label Generator</p><br>
                     <p class="h6">Required <span class="text-danger">*</span></p><br>
-                    <img id="label-logo" src="zebraprinter-full.png" style="display: block; width: 80px; margin-left: auto; margin-right: auto;>
-                    <label class="h5"></label>
-                    <!-- WHY IS REPAIR NUMBER NOT USING THE H TAG UNLESS A BLANK IS INSERTED ^ -->
+                    <img id="label-logo" src="zebraprinter-full.png" style="display: block; width: 100px; margin-left: auto; margin-right: auto;">
                     <label for="repairNumber" class="mt-3 h5">Enter repair number:<span class="text-danger"> *</span></label><br>
-                    <input type="text" id="repairNumber" onfocus="inputDetect1(this)" maxlength="10" class="mb-3 h3 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" required><br>
+                    <input type="text" id="repairNumber" onfocus="inputDetect1(this)" maxlength="10" class="mb-3 h3 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" required autofocus><br>
                     <label for="serialNumber" class="mt-3 h5">Enter serial number:<span class="text-danger"> *</span></label><br>
                     <input type="text" id="serialNumber" onfocus="inputDetect2(this)" maxlength="12" class="mb-3 h3 text-center auto-tab" style="border-color: white; border: 5px solid white; border-radius: 10px;" required><br>
                     <label for="customerName" class="mt-3 h5 auto-tab">Enter customer name:<span class="text-danger"> *</span></label><br>
@@ -93,7 +96,7 @@
                     <p class="h6 font-weight-normal mt-3"><a href="https://github.com/rbsam176/labelgenerator/blob/main/readme.md">Click here for printer setup instructions.</a></p>
                     <p class="h6 font-weight-normal mt-3">Found a bug? Email <a href="https://webmail.apple.com">sbaker7@apple.com</a> with any issues.</p>
                 </div>
-                <div class="col-3"></div>
+            <div class="col-3 text-right"><button class="btn btn-light" onclick="autofill()">Debug</button></div>
             </div>
         </div>
     </section>
@@ -123,6 +126,15 @@
     </section> 
   </body>
   <script>
+
+    function autofill() {
+        document.getElementById("repairNumber").value = "R000000000";
+        document.getElementById("serialNumber").value = "C02ABCEFGHIJ";
+        document.getElementById("customerName").value = "Appleseed, J";
+        document.getElementById("storeCode1").checked = true;
+        document.getElementById("partNumber").value = "B661-01234";
+    }
+
     $(".auto-tab").keyup(function() {
       if (this.value.length == this.maxLength) {
         $(this).nextAll('.auto-tab:enabled:first').focus();
@@ -151,7 +163,22 @@
         alert("Your repair number must begin with an R");
         return
       }
-    
+
+
+    //   OBJECT EXPERIMENTING
+
+      var inputObject = {};
+      inputObject.repairNumber = document.getElementById('repairNumber').value;
+      inputObject.serialNumber = document.getElementById('serialNumber').value;
+      inputObject.customerName = document.getElementById('customerName').value;
+
+      localStorage.setItem('inputObject', JSON.stringify(inputObject));
+    //   var retrievedObject = localStorage.getItem('inputObject');
+    //   var result = JSON.parse(retrievedObject);
+
+
+
+
 
       if (document.getElementById('storeCode1').checked) {
         rate_value = document.getElementById('storeCode1').value;
@@ -174,9 +201,13 @@
       document.getElementById("serialNumberOutput").innerHTML = serialNumber;
       JsBarcode("#serial-barcode", serialNumber);
       document.getElementById('input-fields').remove();
-      var resetButton = `<a href=""><button id="reset">Reset</button></a>`
-      document.getElementById("no-print").innerHTML = resetButton;
+
+    //   var resetButton = `<a href=""><button id="reset">Reset</button></a>`
+    //   document.getElementById("no-print").innerHTML = resetButton;
+
       window.print();
+      document.getElementById("label-content").style.display = "none";
+      location.reload();
     }
   </script>
 </html>
