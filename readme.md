@@ -2,6 +2,8 @@
 
 <img src="zebra-logo.png" width="100px">
 
+Live site: https://rbsam176.github.io/labelgenerator/
+
 **To turn this project into a .app:**
 1. Open 'Script Editor' on your Mac
 2. Paste the following:
